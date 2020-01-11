@@ -9,11 +9,15 @@ public class GamePlayManager : MonoBehaviour
 {
     public Map playerMap;
 
-    public List<GameObject> playerList;
+    public List<GameObject> playerCrustList;
+
+    public List<GameObject> playerBoundaryList;
 
     public Map gameMap;
 
-    public List<GameObject> gameList;
+    public List<GameObject> gameCrustList;
+
+    public List<GameObject> gameBoundaryList;
 
     public int level;
 
@@ -35,37 +39,48 @@ public class GamePlayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        List<GameObject> glist = gameMap.GenerateGrid(level + 1, level + 1, 1, 3);
-        gameList = glist;
-        List<GameObject> plist = playerMap.GenerateEmptyGrid(level + 1, level + 1, 1, -3);
-        playerList = plist;
+        List<GameObject> gCList = gameMap.GenerateGrid(level + 1, level + 1, 1, 3);
+        gameCrustList = gCList;
+        List<GameObject> pCList = playerMap.GenerateEmptyGrid(level + 1, level + 1, 1, -3);
+        playerCrustList = pCList;
+        List<GameObject>  gBList = gameMap.GenerateBoundaryGrid(level, 1, 3);
+        playerBoundaryList = gBList;
+        List<GameObject> pBList = playerMap.GenerateBoundaryGrid(level, 1, -3);
+        playerBoundaryList = pBList;
 
     }
 
     private void Update()
     {
-        locationMatch(playerList, movingCrust);
+        locationMatch(playerCrustList, movingCrust);
     }
 
     public void DoneButtonClicked()
     {
-        BoundariesToLandforms(boundaries);
-        if(CheckCrustsMatch(gameList, playerList))
+        LevelUp();
+        /*BoundariesToLandforms(boundaries);
+        if(CheckCrustsMatch(gameCrustList, playerCrustList))
         {
             LevelUp();
-        }
+        }*/
     }
 
     public void LevelUp()
     {
-        ClearScene(playerList);
-        ClearScene(gameList);
+        ClearScene(playerCrustList);
+        ClearScene(gameCrustList);
+        ClearScene(playerBoundaryList);
+        ClearScene(gameBoundaryList);
 
         level = level + 1;
         List<GameObject> glist = gameMap.GenerateGrid(level + 1, level + 1, 1, 3);
-        gameList = glist;
+        gameCrustList = glist;
         List<GameObject> plist = playerMap.GenerateEmptyGrid(level + 1, level + 1, 1, -3);
-        playerList = plist;
+        playerCrustList = plist;
+        List<GameObject> gBList = gameMap.GenerateBoundaryGrid(level, 1, 3);
+        playerBoundaryList = gBList;
+        List<GameObject> pBList = playerMap.GenerateBoundaryGrid(level, 1, -3);
+        playerBoundaryList = pBList;
     }
     
     public void ClearScene(List<GameObject> map)

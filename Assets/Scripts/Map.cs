@@ -7,11 +7,10 @@ using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
-    public Crust[] crusts;
+    //public Crust[] crusts;
 
     //public Boundary[] boundaries;
 
-    // the done button to show when all ships are placed
     public Button uiDoneButton;
 
     public GameObject crustPrefab;
@@ -83,6 +82,56 @@ public class Map : MonoBehaviour
             }
         }
         return crusts;
+    }
+
+    public List<GameObject> GenerateBoundaryGrid(int lvl, float tileSize, float offSet)
+    {
+        List<GameObject> boundaries = new List<GameObject>();
+        int boundaryRows = (lvl * 2) + 1;
+        Debug.Log(boundaryRows);
+        bool shortRow = true;
+
+        float inc = 0;
+
+        for(int row = 0; row < boundaryRows; row++)
+        {
+            if (shortRow)
+            {
+                for (int col = 0; col < lvl; col++)
+                {
+                    GameObject tile;
+                    tile = Instantiate(boundaryPrefab, transform);
+                    float posX = col * tileSize + 0.5f;
+                    float rowPos;
+                    rowPos = row;
+                    float posY = rowPos * - tileSize + inc;
+                    Debug.Log("row " + row);
+                    Debug.Log("posY " + posY);
+                    tile.transform.position = new Vector2(posX + offSet, posY + 3);
+                    boundaries.Add(tile);
+                    shortRow = false;
+                }
+            }
+            else if(!shortRow)
+            {
+                for (int col = 0; col < (lvl + 1); col++)
+                {
+                    GameObject tile;
+                    tile = Instantiate(boundaryPrefab, transform);
+                    float posX = col * tileSize;
+                    float rowPos;
+                    rowPos = row;
+                    float posY = rowPos * - tileSize + 0.5f + inc;
+                    Debug.Log("row " + row);
+                    Debug.Log("posY " + posY);
+                    tile.transform.position = new Vector2(posX + offSet, posY + 3);
+                    boundaries.Add(tile);
+                    shortRow = true;
+                }
+                inc = inc + 1;
+            }
+        }
+        return boundaries;
     }
 
 
