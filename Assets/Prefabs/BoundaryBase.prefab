@@ -203,6 +203,8 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   landform: 
+  convergentPrefab: {fileID: 959991120203362362, guid: c81d65796a360584baddb92f98981cce,
+    type: 3}
 --- !u!61 &-3585602390659781619
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -97,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crustType: 
   boundaries: []
+  continentalSprite: {fileID: 21300000, guid: 6b348e0f8475d154dadd4a4a56196346, type: 3}
+  oceanicSprite: {fileID: 21300000, guid: 08e625e88204d624782a39c9f365483b, type: 3}
   GM: {fileID: 0}
   collider: {fileID: 3630904139675531301}
   isLocked: 0

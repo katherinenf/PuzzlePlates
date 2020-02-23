@@ -8,8 +8,9 @@ public class Crust : MonoBehaviour
     // Periodic table properties 
     public string crustType;
     public List<Boundary> boundaries;
-
-    public Map GM;
+    public Sprite continentalSprite;
+    public Sprite oceanicSprite;
+    public GamePlayManager GM;
     private Vector3 startPos;
     private bool isMoveable;
     private bool isTrigger;
@@ -21,7 +22,7 @@ public class Crust : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();
     }
 
 
@@ -33,16 +34,19 @@ public class Crust : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (isLocked == false)
-        {
-            screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-            offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
-                                                                                    Input.mousePosition.y,
-                                                                                    screenPoint.z));
-        }
+            if (GM.GetComponent<GamePlayManager>().primedCrust == "continental")
+            {
+                this.GetComponent<SpriteRenderer>().sprite = continentalSprite;
+                crustType = "continental";
+            }
+            else if (GM.GetComponent<GamePlayManager>().primedCrust == "oceanic")
+            {
+                this.GetComponent<SpriteRenderer>().sprite = oceanicSprite;
+                crustType = "oceanic";
+            }
     }
 
-    void OnMouseDrag()
+    /*void OnMouseDrag()
     {
         if (isLocked == false)
         {
@@ -61,7 +65,7 @@ public class Crust : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-    }
+    }*/
 
 
 

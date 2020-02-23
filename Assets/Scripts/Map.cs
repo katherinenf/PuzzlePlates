@@ -23,7 +23,9 @@ public class Map : MonoBehaviour
 
     public Sprite oceanicSprite;
 
-    
+    public GamePlayManager GM;
+
+
 
     public List<GameObject> GenerateGrid(int rows, int cols, float tileSize, float offSet)
     {
@@ -84,15 +86,12 @@ public class Map : MonoBehaviour
         return crusts;
     }
 
-    public List<GameObject> GenerateBoundaryGrid(int lvl, float tileSize, float offSet)
+    public List<GameObject> GenerateBoundaryGrid(int lvl, float tileSize, float offSet, bool isGameBoard)
     {
         List<GameObject> boundaries = new List<GameObject>();
         int boundaryRows = (lvl * 2) + 1;
-        Debug.Log(boundaryRows);
         bool shortRow = true;
-
         float inc = 0;
-
         for(int row = 0; row < boundaryRows; row++)
         {
             if (shortRow)
@@ -105,8 +104,7 @@ public class Map : MonoBehaviour
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * - tileSize + inc;
-                    Debug.Log("row " + row);
-                    Debug.Log("posY " + posY);
+
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
                     boundaries.Add(tile);
                     shortRow = false;
@@ -122,8 +120,6 @@ public class Map : MonoBehaviour
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * - tileSize + 0.5f + inc;
-                    Debug.Log("row " + row);
-                    Debug.Log("posY " + posY);
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
                     boundaries.Add(tile);
                     shortRow = true;
@@ -131,8 +127,14 @@ public class Map : MonoBehaviour
                 inc = inc + 1;
             }
         }
+        if (isGameBoard)
+        {
+            GM.BoundariesToLandforms(boundaries);
+        }
         return boundaries;
+        
     }
+
 
 
 

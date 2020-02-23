@@ -35,6 +35,12 @@ public class GamePlayManager : MonoBehaviour
 
     public List<GameObject> boundaries;
 
+    public String primedBoundary;
+
+    public String primedCrust;
+
+    //public GameObject primedPrefab;
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,14 +58,24 @@ public class GamePlayManager : MonoBehaviour
 
     private void Update()
     {
-        locationMatch(playerCrustList, movingCrust);
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                Debug.Log(hit.transform.gameObject.name);
+            }
+        }
+        //locationMatch(playerCrustList, movingCrust);
     }
 
     public void DoneButtonClicked()
     {
         LevelUp();
-        /*BoundariesToLandforms(boundaries);
-        if(CheckCrustsMatch(gameCrustList, playerCrustList))
+        BoundariesToLandforms(boundaries);
+        /*if(CheckCrustsMatch(gameCrustList, playerCrustList))
         {
             LevelUp();
         }*/
@@ -69,7 +85,7 @@ public class GamePlayManager : MonoBehaviour
     {
         ClearScene(playerCrustList);
         ClearScene(gameCrustList);
-        ClearScene(playerBoundaryList);
+        //ClearScene(playerBoundaryList);
         ClearScene(gameBoundaryList);
 
         level = level + 1;
@@ -77,9 +93,9 @@ public class GamePlayManager : MonoBehaviour
         gameCrustList = glist;
         List<GameObject> plist = playerMap.GenerateEmptyGrid(level + 1, level + 1, 1, -3);
         playerCrustList = plist;
-        List<GameObject> gBList = gameMap.GenerateBoundaryGrid(level, 1, 3);
+        List<GameObject> gBList = gameMap.GenerateBoundaryGrid(level, 1, 3, true);
         playerBoundaryList = gBList;
-        List<GameObject> pBList = playerMap.GenerateBoundaryGrid(level, 1, -3);
+        List<GameObject> pBList = playerMap.GenerateBoundaryGrid(level, 1, -3, false);
         playerBoundaryList = pBList;
     }
     
@@ -96,7 +112,7 @@ public class GamePlayManager : MonoBehaviour
     }
 
 
-    public void NewContinentalCrust()
+    /*public void NewContinentalCrust()
     {
         Crust newCrust = Instantiate(crustRef);
         newCrust.transform.GetComponent<SpriteRenderer>().sprite = (continentalSprites[0]);
@@ -115,7 +131,7 @@ public class GamePlayManager : MonoBehaviour
         newCrust.SetMoveable(true);
         newCrust.crustType = "oceanic";
         movingCrust = newCrust;
-    }
+    }*/
 
     public bool CheckCrustsMatch(List<GameObject> l1, List<GameObject> l2)
     {
@@ -130,7 +146,7 @@ public class GamePlayManager : MonoBehaviour
     }
 
 
-    public void locationMatch(List<GameObject> map, Crust crust)
+   /* public void locationMatch(List<GameObject> map, Crust crust)
     {
         if (crust != null)
         {
@@ -148,12 +164,12 @@ public class GamePlayManager : MonoBehaviour
             }
         }       
     }
-
-    public void NewConvergent()
+*/
+    /*public void NewConvergent()
     {
         Boundary newBoundary = Instantiate(convergentRef);
         newBoundary.transform.position = new Vector3(-6, transform.position.y + 1, -1);
-    }
+    }*/
 
     public void AddBoundaryToList(GameObject boundary)
     {
@@ -167,6 +183,24 @@ public class GamePlayManager : MonoBehaviour
             go.GetComponent<Boundary>().BoundaryToLandform();
         }
     }
+
+    public void ConvergentButtonPressed()
+    {
+        primedBoundary = "convergent";
+    }
+
+    public void ContinentalButtonPressed()
+    {
+        primedCrust = "continental";
+    }
+
+    public void OceanicButtonPressed()
+    {
+        primedCrust = "oceanic";
+    }
+
+
+
 
 
 }

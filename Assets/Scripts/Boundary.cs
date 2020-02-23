@@ -22,7 +22,7 @@ public class Boundary : MonoBehaviour
     private bool isMoveable = true;
     public ContactFilter2D contactFilter;
     public string landform;
-
+    public GameObject convergentPrefab;
 
 
     // Start is called before the first frame update
@@ -41,51 +41,20 @@ public class Boundary : MonoBehaviour
 
     void OnMouseDown()
     {
-        screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-        crusts[0] = null;
-        crusts[1] = null;
-    }
-
-    void OnMouseDrag()
-    {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        var currentPos = curPosition;
-        if (rotated == false)
+        GameObject newboundary;
+        if (GM.GetComponent<GamePlayManager>().primedBoundary == "convergent")
         {
-            transform.position = new Vector3(Mathf.Round(currentPos.x) + 0.5f,
-                                         Mathf.Round(currentPos.y),
-                                         Mathf.Round(currentPos.z));
+            newboundary = Instantiate(convergentPrefab);
+            newboundary.transform.position = this.transform.position;
+            //this.GetComponent<GameObject>().transform
+            GM.GetComponent<GamePlayManager>().boundaries.Add(newboundary);
+            int crustNum = collider.OverlapCollider(contactFilter, crusts);
+            Debug.Log(crustNum);
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        else if (GM.GetComponent<GamePlayManager>().primedBoundary == "divergent")
         {
-            this.gameObject.transform.Rotate(0, 0, 90, Space.Self);
-            transform.position = new Vector3(Mathf.Round(currentPos.x),
-                                         Mathf.Round(currentPos.y) + 0.5F,
-                                         Mathf.Round(currentPos.z));
 
         }
-
-
-    }
-
-    private void Poof()
-    {
-        Destroy(this.gameObject);
-    }
-
-    //if the boundary is in a valid position(over two crusts), sets the boundary down
-    private void OnMouseUp()
-    {
-        int crustNum = collider.OverlapCollider(contactFilter, crusts);
-        if (crusts[0] == null || crusts[1] == null)
-        {
-            Poof();
-        }
-        else
-            //Debug.Log(this.gameObject);
-            GM.AddBoundaryToList(this.gameObject);
     }
 
     public void BoundaryToLandform()
