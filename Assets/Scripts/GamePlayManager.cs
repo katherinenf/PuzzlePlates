@@ -47,10 +47,10 @@ public class GamePlayManager : MonoBehaviour
     void Start()
     {
         CreateGrids(1);
- /*       foreach (GameObject go in gameBoundaryList)
+        foreach (GameObject go in gameBoundaryList)
         {
             go.GetComponent<Boundary>().Initialize();
-        }*/
+        }
     }
 
     private void Update()
