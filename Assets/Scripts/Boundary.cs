@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Boundary : MonoBehaviour
 {
+    public Sprite convergentSprite;
+    public string boundaryType;
     public GameObject boundary;
-    public GameObject contContLF;
-    public string ccLandform;
-    public GameObject contOceanicLF;
-    public string coLandform;
-    public GameObject oceanicOceanicLF;
-    public string ooLandform;
+    public Sprite[] landforms;
+    public Sprite[] convergentLandforms;
+    public Sprite[] divergentLandforms;
+    public Sprite transformLandform;
     public new Collider2D collider;
     public bool rotated = false;
     //public int boundarySize;
     //public int anchorOffset;
     GamePlayManager GM;
-    private Collider2D[] crusts;
+    public Collider2D[] crusts;
     private Vector3 startPos;
     private bool startRotation;
     private bool isMoveable = true;
@@ -32,56 +32,72 @@ public class Boundary : MonoBehaviour
         startRotation = rotated;
         crusts = new Collider2D[2];
         int crustNum = collider.OverlapCollider(contactFilter, crusts);
-        GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();
-        
+        GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();      
 
     }
 
-    private Vector3 screenPoint; private Vector3 offset;
-
-    void OnMouseDown()
+    public Collider2D[] GetCrusts()
     {
-        GameObject newboundary;
-        if (GM.GetComponent<GamePlayManager>().primedBoundary == "convergent")
+        int crustNum = collider.OverlapCollider(contactFilter, crusts);
+        return crusts;
+    }
+
+        void OnMouseDown()
         {
-            newboundary = Instantiate(convergentPrefab);
-            newboundary.transform.position = this.transform.position;
-            //this.GetComponent<GameObject>().transform
-            GM.GetComponent<GamePlayManager>().boundaries.Add(newboundary);
-            int crustNum = collider.OverlapCollider(contactFilter, crusts);
-            Debug.Log(crustNum);
+            GM.GetComponent<GamePlayManager>().primedCrust = null;
+
+            if (GM.GetComponent<GamePlayManager>().primedBoundary == "convergent")
+               {
+                    this.GetComponent<SpriteRenderer>().sprite = convergentSprite;
+                    this.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    boundaryType = "convergent";
+                    GM.GetComponent<GamePlayManager>().boundaries.Add(this);
+
+            GetCrusts();
         }
-        else if (GM.GetComponent<GamePlayManager>().primedBoundary == "divergent")
-        {
 
         }
-    }
 
     public void BoundaryToLandform()
     {
-        if (crusts[0].GetComponent<Crust>().crustType == "continental"
-            && crusts[1].GetComponent<Crust>().crustType == "continental")
+        if (boundaryType == "transform")
         {
-            contContLF.SetActive(true);
-            //this.gameObject.GetComponent<SpriteRenderer>().sprite = contContLF;
-            landform = ccLandform;
+            this.GetComponent<SpriteRenderer>().sprite = transformLandform;
         }
-        if (crusts[0].GetComponent<Crust>().crustType == "oceanic"
-            && crusts[1].GetComponent<Crust>().crustType == "oceanic")
+        else
         {
-            oceanicOceanicLF.SetActive(true);
-            //this.gameObject.GetComponent<SpriteRenderer>().sprite = oceanicOceanicLF;
-            landform = ooLandform;
+            SetLandformsList();
+            if (crusts[0].GetComponent<Crust>().crustType == "continental"
+                && crusts[1].GetComponent<Crust>().crustType == "continental")
+            {
+                this.GetComponent<SpriteRenderer>().sprite = landforms[0];
+            }
+            else if (crusts[0].GetComponent<Crust>().crustType == "oceanic"
+                && crusts[1].GetComponent<Crust>().crustType == "oceanic")
+            {
+                this.GetComponent<SpriteRenderer>().sprite = landforms[1];
+            }
+            else if (boundaryType != "divergent" &&
+                (crusts[0].GetComponent<Crust>().crustType == "oceanic"
+               && crusts[1].GetComponent<Crust>().crustType == "continental") ||
+               crusts[1].GetComponent<Crust>().crustType == "oceanic"
+               && crusts[0].GetComponent<Crust>().crustType == "continental")
+            {
+                this.GetComponent<SpriteRenderer>().sprite = landforms[2];
+            }
         }
-        if ((crusts[0].GetComponent<Crust>().crustType == "oceanic"
-           && crusts[1].GetComponent<Crust>().crustType == "continental") ||
-           crusts[1].GetComponent<Crust>().crustType == "oceanic"
-           && crusts[0].GetComponent<Crust>().crustType == "continental")
+        this.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    void SetLandformsList()
+    {
+        if (boundaryType == "convergent")
         {
-            contOceanicLF.SetActive(true);
-            //this.gameObject.GetComponent<SpriteRenderer>().sprite = contOceanicLF;
-            landform = coLandform;
+            landforms = convergentLandforms;
         }
-        boundary.SetActive(false);
+        else if (boundaryType == "divergent")
+        {
+            landforms = divergentLandforms;
+        }
     }
 }

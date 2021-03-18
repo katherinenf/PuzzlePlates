@@ -923,6 +923,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameMap
       objectReference: {fileID: 0}
+    - target: {fileID: 8925993361695915621, guid: abacdb37633519e49bb1821019c4ad5a,
+        type: 3}
+      propertyPath: continentalSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6b348e0f8475d154dadd4a4a56196346,
+        type: 3}
     - target: {fileID: 8961234850244877759, guid: abacdb37633519e49bb1821019c4ad5a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1348,9 +1354,6 @@ MonoBehaviour:
   level: 1
   crustRef: {fileID: -6378544763134833837, guid: 2d0c956f46fc87a40ba447f8aa798e30,
     type: 3}
-  continentalSprites:
-  - {fileID: 21300000, guid: 107af0d013128724d8e2d919c64e677f, type: 3}
-  oceanicSprite: {fileID: 21300000, guid: 08e625e88204d624782a39c9f365483b, type: 3}
   continentalButton: {fileID: 0}
   movingCrust: {fileID: 0}
   convergentRef: {fileID: 4608129570805440725, guid: c81d65796a360584baddb92f98981cce,
@@ -1358,6 +1361,12 @@ MonoBehaviour:
   boundaries: []
   primedBoundary: 
   primedCrust: 
+  primedPrefab: {fileID: 0}
+  cursorLook: {fileID: 0}
+  cursors:
+  - {fileID: 2800000, guid: 2a2b4775272c890448e1bd6239fdfc84, type: 3}
+  - {fileID: 2800000, guid: 682ecf9336b03ba4bb7f247b4d891511, type: 3}
+  - {fileID: 2800000, guid: da684d26f38d13c4e96887188e7be456, type: 3}
 --- !u!1 &1533628020
 GameObject:
   m_ObjectHideFlags: 0
