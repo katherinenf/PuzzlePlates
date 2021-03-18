@@ -31,14 +31,22 @@ public class Boundary : MonoBehaviour
         startPos = transform.position;
         startRotation = rotated;
         GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();
-        crusts = new Collider2D[2];
-        collider.OverlapCollider(contactFilter, crusts);
-        if (gameMap == true)
-        {
-            ChooseBoundaryType();
-            BoundaryToLandform();
-        }
+    }
 
+    public void Initialize()
+    {
+        if (GM.crustsInPlace)
+        {
+            Debug.Log("I am called");
+            crusts = new Collider2D[2];
+            collider.OverlapCollider(contactFilter, crusts);
+            if (gameMap == true)
+            {
+                ChooseBoundaryType();
+                BoundaryToLandform();
+            }
+
+        }
     }
 
     public Collider2D[] GetCrusts()
@@ -108,7 +116,6 @@ public class Boundary : MonoBehaviour
     void ChooseBoundaryType()
     {
         float type = UnityEngine.Random.Range(0, 3);
-
         if ((type == 0 || type == 1) && (crusts[0].GetComponent<Crust>().crustType == crusts[1].GetComponent<Crust>().crustType))
         {
             boundaryType = "divergent";
@@ -116,12 +123,11 @@ public class Boundary : MonoBehaviour
         else if (type == 2)
         {
             boundaryType = "transform";
-
         }
         else
         {
             boundaryType = "convergent";
         }
+        Debug.Log(boundaryType);
     }
-
 }

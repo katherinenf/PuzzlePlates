@@ -24,9 +24,10 @@ public class Map : MonoBehaviour
 
     public GamePlayManager GM;
 
-    public Sprite convergentSprite;
-
-
+    void Start()
+    {
+        GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();
+    }
 
     public List<GameObject> GenerateCrustGrid(int rows, int cols, float tileSize, float offSet)
     {
@@ -63,9 +64,9 @@ public class Map : MonoBehaviour
                     tile.transform.GetComponent<Collider2D>().enabled = true;
                     crusts.Add(tile);
                 }
-
             }
         }
+        GM.crustsInPlace = true;
         return crusts;
     }
 
@@ -119,7 +120,6 @@ public class Map : MonoBehaviour
                 {
                     GameObject tile;
                     tile = Instantiate(boundaryPrefab, transform);
-                    tile.GetComponent<Boundary>().gameMap = false;
                     float posX = col * tileSize;
                     float rowPos;
                     rowPos = row;
@@ -153,11 +153,9 @@ public class Map : MonoBehaviour
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * -tileSize + inc;
-                    tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion());
+                    tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion(), transform);
                     boundaries.Add(tile);
                     shortRow = false;
-
-
                 }
             }
             else if (!shortRow)
@@ -169,7 +167,7 @@ public class Map : MonoBehaviour
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * -tileSize + 0.5f + inc;
-                    tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion());
+                    tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion(), transform);
                     boundaries.Add(tile);
                     shortRow = true;
                 }

@@ -41,11 +41,16 @@ public class GamePlayManager : MonoBehaviour
 
     public Texture2D[] cursors;
 
+    public bool crustsInPlace = false;
 
     // Start is called before the first frame update
     void Start()
     {
         CreateGrids(1);
+ /*       foreach (GameObject go in gameBoundaryList)
+        {
+            go.GetComponent<Boundary>().Initialize();
+        }*/
     }
 
     private void Update()
@@ -56,10 +61,12 @@ public class GamePlayManager : MonoBehaviour
     public void DoneButtonClicked()
     {
         BoundariesToLandforms(boundaries);
-        if(CheckCrustsMatch(gameCrustList, playerCrustList))
+/*        if(CheckCrustsMatch(gameCrustList, playerCrustList))
         {
             LevelUp();
-        }
+        }*/
+        LevelUp();
+
     }
 
     public void LevelUp()
@@ -72,6 +79,10 @@ public class GamePlayManager : MonoBehaviour
         level = level + 1;
 
         CreateGrids(level);
+        foreach (GameObject go in gameBoundaryList)
+        {
+            go.GetComponent<Boundary>().Initialize();
+        }
     }
     
     public void ClearScene(List<GameObject> toClear)
@@ -109,7 +120,7 @@ public class GamePlayManager : MonoBehaviour
 
     public void AddBoundaryToList(Boundary boundary)
     {
-        boundaries.Add(boundary.GetComponent<Boundary>());
+        boundaries.Add(boundary);
     }
 
     public void BoundariesToLandforms(List<Boundary> boundaries)
