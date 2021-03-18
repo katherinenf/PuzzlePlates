@@ -109,7 +109,7 @@ public class GamePlayManager : MonoBehaviour
 
     public void AddBoundaryToList(Boundary boundary)
     {
-        boundaries.Add(boundary);
+        boundaries.Add(boundary.GetComponent<Boundary>());
     }
 
     public void BoundariesToLandforms(List<Boundary> boundaries)

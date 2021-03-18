@@ -107,8 +107,8 @@ public class Map : MonoBehaviour
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * - tileSize + inc;
-
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
+                    tile.GetComponent<Boundary>().gameMap = false;
                     boundaries.Add(tile);
                     shortRow = false;
                 }
@@ -119,11 +119,13 @@ public class Map : MonoBehaviour
                 {
                     GameObject tile;
                     tile = Instantiate(boundaryPrefab, transform);
+                    tile.GetComponent<Boundary>().gameMap = false;
                     float posX = col * tileSize;
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * - tileSize + 0.5f + inc;
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
+                    tile.GetComponent<Boundary>().gameMap = false;
                     boundaries.Add(tile);
                     shortRow = true;
                 }
@@ -147,18 +149,14 @@ public class Map : MonoBehaviour
                 for (int col = 0; col < lvl; col++)
                 {
                     GameObject tile;
-                    tile = Instantiate(boundaryPrefab, transform);
                     float posX = col * tileSize + 0.5f;
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * -tileSize + inc;
-                    tile.transform.position = new Vector2(posX + offSet, posY + 3);
+                    tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion());
                     boundaries.Add(tile);
                     shortRow = false;
-                    ChooseBoundaryType(tile, tile.GetComponent<Boundary>().crusts);
-                    tile.GetComponent<Boundary>().BoundaryToLandform();
-                    Debug.Log(tile.GetComponent<Boundary>().crusts[0].GetComponent<Crust>().crustType);
-                    Debug.Log(tile.GetComponent<Boundary>().crusts[1].GetComponent<Crust>().crustType);
+
 
                 }
             }
@@ -167,20 +165,13 @@ public class Map : MonoBehaviour
                 for (int col = 0; col < (lvl + 1); col++)
                 {
                     GameObject tile;
-                    tile = Instantiate(boundaryPrefab, transform);
                     float posX = col * tileSize;
                     float rowPos;
                     rowPos = row;
                     float posY = rowPos * -tileSize + 0.5f + inc;
-                    tile.transform.position = new Vector2(posX + offSet, posY + 3);
+                    tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion());
                     boundaries.Add(tile);
                     shortRow = true;
-                    ChooseBoundaryType(tile, tile.GetComponent<Boundary>().crusts);
-                    tile.GetComponent<Boundary>().BoundaryToLandform();
-                    Debug.Log(tile.GetComponent<Boundary>().crusts[0].GetComponent<Crust>().crustType);
-                    Debug.Log(tile.GetComponent<Boundary>().crusts[1].GetComponent<Crust>().crustType);
-
-
                 }
                 inc++;
             }
@@ -189,26 +180,4 @@ public class Map : MonoBehaviour
         return boundaries;
 
     }
-
-    void ChooseBoundaryType(GameObject boundary, Collider2D[] crusts)
-    {
-        float type = UnityEngine.Random.Range(0, 3);
-
-        if ((type == 0 || type == 1)
-            && (crusts[0].GetComponent<Crust>().crustType == crusts[1].GetComponent<Crust>().crustType))
-        {
-            boundary.GetComponent<Boundary>().boundaryType = "divergent";
-        }
-        else if(type == 2)
-        {
-            boundary.GetComponent<Boundary>().boundaryType = "transform";
-
-        }
-        else 
-        {
-            boundary.GetComponent<Boundary>().boundaryType = "convergent";
-        }
-    }
-
-
 }

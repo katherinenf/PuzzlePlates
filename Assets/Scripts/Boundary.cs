@@ -23,22 +23,27 @@ public class Boundary : MonoBehaviour
     public ContactFilter2D contactFilter;
     public string landform;
     public GameObject convergentPrefab;
+    public bool gameMap = true;
 
 
-    // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         startPos = transform.position;
         startRotation = rotated;
+        GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();
         crusts = new Collider2D[2];
-        int crustNum = collider.OverlapCollider(contactFilter, crusts);
-        GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();      
+        collider.OverlapCollider(contactFilter, crusts);
+        if (gameMap == true)
+        {
+            ChooseBoundaryType();
+            BoundaryToLandform();
+        }
 
     }
 
     public Collider2D[] GetCrusts()
     {
-        int crustNum = collider.OverlapCollider(contactFilter, crusts);
+        collider.OverlapCollider(contactFilter, crusts);
         return crusts;
     }
 
@@ -52,9 +57,8 @@ public class Boundary : MonoBehaviour
                     this.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                     boundaryType = "convergent";
                     GM.GetComponent<GamePlayManager>().boundaries.Add(this);
-
-            GetCrusts();
-        }
+                    GetCrusts();
+                }
 
         }
 
@@ -100,4 +104,24 @@ public class Boundary : MonoBehaviour
             landforms = divergentLandforms;
         }
     }
+
+    void ChooseBoundaryType()
+    {
+        float type = UnityEngine.Random.Range(0, 3);
+
+        if ((type == 0 || type == 1) && (crusts[0].GetComponent<Crust>().crustType == crusts[1].GetComponent<Crust>().crustType))
+        {
+            boundaryType = "divergent";
+        }
+        else if (type == 2)
+        {
+            boundaryType = "transform";
+
+        }
+        else
+        {
+            boundaryType = "convergent";
+        }
+    }
+
 }
