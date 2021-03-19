@@ -96,6 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convergentSprite: {fileID: 21300000, guid: 4b307b3c290921a42a4e997d6e9d3b07, type: 3}
+  divergentSprite: {fileID: 21300000, guid: ca55ae8ed354acb4e8a65204e5213e5e, type: 3}
+  transformSprite: {fileID: 21300000, guid: 34d1ac609434c7143b07ef0321e580de, type: 3}
   boundaryType: 
   boundary: {fileID: 0}
   landforms: []

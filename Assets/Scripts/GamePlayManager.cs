@@ -41,16 +41,10 @@ public class GamePlayManager : MonoBehaviour
 
     public Texture2D[] cursors;
 
-    public bool crustsInPlace = false;
-
     // Start is called before the first frame update
     void Start()
     {
         CreateGrids(1);
-        foreach (GameObject go in gameBoundaryList)
-        {
-            go.GetComponent<Boundary>().Initialize();
-        }
     }
 
     private void Update()
@@ -79,10 +73,7 @@ public class GamePlayManager : MonoBehaviour
         level = level + 1;
 
         CreateGrids(level);
-        foreach (GameObject go in gameBoundaryList)
-        {
-            go.GetComponent<Boundary>().Initialize();
-        }
+
     }
     
     public void ClearScene(List<GameObject> toClear)
@@ -103,6 +94,7 @@ public class GamePlayManager : MonoBehaviour
         playerCrustList = playerMap.GenerateEmptyCrustGrid(level + 1, level + 1, 1, -3);
         playerBoundaryList = playerMap.GenerateEmptyBoundaryGrid(level, 1, -3);
     }
+
 
     public bool CheckCrustsMatch(List<GameObject> l1, List<GameObject> l2)
     {
@@ -134,6 +126,20 @@ public class GamePlayManager : MonoBehaviour
     public void ConvergentButtonPressed()
     {
         primedBoundary = "convergent";
+        cursorLook = cursors[0];
+        cursorLook.Resize(1, 1);
+
+    }
+
+    public void DivergentButtonPressed()
+    {
+        primedBoundary = "divergent";
+        cursorLook = cursors[0];
+    }
+
+    public void TransformButtonPressed()
+    {
+        primedBoundary = "transform";
         cursorLook = cursors[0];
     }
 

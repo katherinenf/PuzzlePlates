@@ -50,6 +50,7 @@ public class Map : MonoBehaviour
                     float posY = row * -tileSize;
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
                     tile.transform.GetComponent<Collider2D>().enabled = true;
+                    tile.GetComponent<Renderer>().sortingOrder = -1;
                     crusts.Add(tile);
                 }
 
@@ -62,11 +63,11 @@ public class Map : MonoBehaviour
                     float posY = row * -tileSize;
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
                     tile.transform.GetComponent<Collider2D>().enabled = true;
+                    tile.GetComponent<Renderer>().sortingOrder = -1;
                     crusts.Add(tile);
                 }
             }
         }
-        GM.crustsInPlace = true;
         return crusts;
     }
 
@@ -110,7 +111,6 @@ public class Map : MonoBehaviour
                     float posY = rowPos * - tileSize + inc;
                     tile.transform.position = new Vector2(posX + offSet, posY + 3);
                     tile.GetComponent<Boundary>().gameMap = false;
-                    boundaries.Add(tile);
                     shortRow = false;
                 }
             }
@@ -155,6 +155,7 @@ public class Map : MonoBehaviour
                     float posY = rowPos * -tileSize + inc;
                     tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion(), transform);
                     boundaries.Add(tile);
+                    GM.boundaries.Add(tile.GetComponent<Boundary>());
                     shortRow = false;
                 }
             }
@@ -169,6 +170,7 @@ public class Map : MonoBehaviour
                     float posY = rowPos * -tileSize + 0.5f + inc;
                     tile = Instantiate(boundaryPrefab, new Vector2(posX + offSet, posY + 3), new Quaternion(), transform);
                     boundaries.Add(tile);
+                    GM.boundaries.Add(tile.GetComponent<Boundary>());
                     shortRow = true;
                 }
                 inc++;

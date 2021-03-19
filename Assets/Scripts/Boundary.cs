@@ -5,6 +5,9 @@ using UnityEngine;
 public class Boundary : MonoBehaviour
 {
     public Sprite convergentSprite;
+    public Sprite divergentSprite;
+    public Sprite transformSprite;
+
     public string boundaryType;
     public GameObject boundary;
     public Sprite[] landforms;
@@ -31,23 +34,28 @@ public class Boundary : MonoBehaviour
         startPos = transform.position;
         startRotation = rotated;
         GM = GameObject.Find("GamePlayManager").GetComponent<GamePlayManager>();
+        crusts = new Collider2D[2];
+        collider.OverlapCollider(contactFilter, crusts);
+        if (gameMap == true)
+        {
+            ChooseBoundaryType();
+            BoundaryToLandform();
+        }
     }
 
-    public void Initialize()
+/*    public void Initialize()
     {
-        if (GM.crustsInPlace)
-        {
-            Debug.Log("I am called");
-            crusts = new Collider2D[2];
-            collider.OverlapCollider(contactFilter, crusts);
-            if (gameMap == true)
+        Debug.Log("I am called");
+        crusts = new Collider2D[2];
+        collider.OverlapCollider(contactFilter, crusts);
+        Debug.Log(crusts[0].GetComponent<Crust>().crustType);
+        Debug.Log(crusts[1].GetComponent<Crust>().crustType);
+        if (gameMap == true)
             {
                 ChooseBoundaryType();
                 BoundaryToLandform();
             }
-
-        }
-    }
+    }*/
 
     public Collider2D[] GetCrusts()
     {
@@ -55,20 +63,37 @@ public class Boundary : MonoBehaviour
         return crusts;
     }
 
-        void OnMouseDown()
+    void OnMouseDown()
+    {
+        GM.GetComponent<GamePlayManager>().primedCrust = null;
+
+        if (GM.GetComponent<GamePlayManager>().primedBoundary == "convergent")
         {
-            GM.GetComponent<GamePlayManager>().primedCrust = null;
-
-            if (GM.GetComponent<GamePlayManager>().primedBoundary == "convergent")
-               {
-                    this.GetComponent<SpriteRenderer>().sprite = convergentSprite;
-                    this.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                    boundaryType = "convergent";
-                    GM.GetComponent<GamePlayManager>().boundaries.Add(this);
-                    GetCrusts();
-                }
-
+            this.GetComponent<SpriteRenderer>().sprite = convergentSprite;
+            this.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            boundaryType = "convergent";
+            GM.GetComponent<GamePlayManager>().boundaries.Add(this);
+            GetCrusts();
         }
+
+        if (GM.GetComponent<GamePlayManager>().primedBoundary == "divergent")
+        {
+            this.GetComponent<SpriteRenderer>().sprite = divergentSprite;
+            this.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            boundaryType = "divergent";
+            GM.GetComponent<GamePlayManager>().boundaries.Add(this);
+            GetCrusts();
+        }
+
+        if (GM.GetComponent<GamePlayManager>().primedBoundary == "transform")
+        {
+            this.GetComponent<SpriteRenderer>().sprite = transformSprite;
+            this.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            boundaryType = "transform";
+            GM.GetComponent<GamePlayManager>().boundaries.Add(this);
+            GetCrusts();
+        }
+    }
 
     public void BoundaryToLandform()
     {
