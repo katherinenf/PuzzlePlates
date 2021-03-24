@@ -87,11 +87,11 @@ public class GamePlayManager : MonoBehaviour
     public void CreateGrids(int level)
     {
         // Procedurally generate crust and boundary grids for game
-        gameCrustList = gameMap.GenerateCrustGrid(level + 1, level + 1, 1, 3);
+        gameCrustList = gameMap.GenerateCrustGrid(level + 1, level + 1, 1, 3, true);
         gameBoundaryList = gameMap.GenerateBoundaryGrid(level, 1, 3);
 
-        // generate empty crust and boundary lists 
-        playerCrustList = playerMap.GenerateEmptyCrustGrid(level + 1, level + 1, 1, -3);
+        ///generate empty crust and boundary lists 
+        gameCrustList = gameMap.GenerateCrustGrid(level + 1, level + 1, 1, -3, false);
         playerBoundaryList = playerMap.GenerateEmptyBoundaryGrid(level, 1, -3);
     }
 
@@ -127,7 +127,6 @@ public class GamePlayManager : MonoBehaviour
     {
         primedBoundary = "convergent";
         cursorLook = cursors[0];
-        cursorLook.Resize(1, 1);
 
     }
 
